@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Dynamic Shadow Test</title>
+        <style>
+            body>div{
+                width:calc(80vw - 2px);
+                height:calc(80vh - 2px);
+                margin:10vh 10vw;
+            }
+            .mainFrame{
+                border:1px solid #DDD;
+                cursor: pointer;
+            }
+            .mainFrame:hover{   border:1px solid orange;    }
+            
+            body>span#data{ position: absolute; top: 0px; left:0px; padding:10px;}
+        </style>
+    </head>
+    <body>
+        <div class="mainFrame" main-frame ></div>
+        <span id="data">
+            X: <span id="x">0</span>
+            Y: <span id="y">0</span>
+            X-angel: <span id="xa">0</span>
+            Y-angel: <span id="ya">0</span>
+        <span>
+    </body>
+    <script>
+            var d = document.querySelector('[main-frame]');
+            var f = document.getElementById('frame');
+            var half_width = window.innerWidth / 2;
+            var half_height = window.innerHeight / 2;
+            
+            document.addEventListener('mousemove', function(event){
+                document.getElementById('x').innerText = event.clientX;
+                document.getElementById('y').innerText = event.clientY;
+                
+                var abs_width = Math.abs(half_width - event.clientX);
+                var abs_height = Math.abs(half_height - event.clientY);
+                var rotateY = (half_width - event.clientX) / half_width;
+                var rotateX = (event.clientY - half_height) / half_height;
+                var shadow_blur = ((abs_width / half_width) * 0.5 + (abs_height / half_height) * 0.5) * 30;
+                var x_angel = (rotateX * 2).toFixed(1);
+                var y_angel = (rotateY * 2).toFixed(1);
+                var horizontal_shadow = (((half_width - event.clientX) / half_width) * 30).toFixed(0);
+                var vertical_shadow = (((half_height - event.clientY) / half_height) * 30).toFixed(0);
+                d.style.boxShadow = horizontal_shadow + 'px ' + vertical_shadow + 'px ' + shadow_blur + 'px #EEE';
+                d.style.transform = 'rotate3d(' + x_angel + ', ' + y_angel + ', 0, 5deg)';
+                
+                document.getElementById('xa').innerText = x_angel;
+                document.getElementById('ya').innerText = y_angel;
+                //console.log(horizontal_shadow + 'px ' + vertical_shadow + 'px 10px #EEE');
+            });
+    </script>
+</html>
